@@ -5,45 +5,45 @@ import { AntDesign } from '@expo/vector-icons';
 const initialItems = [
     {
         itemNo: 1,
-        src: require('./assets/img/other-car.png'),
+        src: require('../../assets/minigame/randoms/apple.png'),
         speed: 6,
-        score: 0
+        score: 2
     },
     {
         itemNo: 2,
-        src: require('./assets/img/other-car.png'),
+        src: require('../../assets/minigame/randoms/banana.png'),
         speed: 6,
-        score: 0
+        score: 2
     },
     {
         itemNo: 3,
-        src: require('./assets/img/other-car.png'),
+        src: require('../../assets/minigame/randoms/cheese.png'),
         speed: 8,
-        score: 0
+        score: 3
     },
     {
         itemNo: 4,
-        src: require('./assets/img/other-car.png'),
+        src: require('../../assets/minigame/randoms/lettuce.png'),
         speed: 4,
-        score: 0
+        score: 1
     },
     {
         itemNo: 5,
-        src: require('./assets/img/other-car.png'),
+        src: require('../../assets/minigame/randoms/meat.png'),
         speed: 8,
-        score: 0
+        score: 3
     },
     {
         itemNo: 6,
-        src: require('./assets/img/other-car.png'),
+        src: require('../../assets/minigame/randoms/rice.png'),
         speed: 10,
-        score: 0
+        score: 4
     },
     {
         itemNo: 7,
-        src: require('./assets/img/other-car.png'),
+        src: require('../../assets/minigame/randoms/soup.png'),
         speed: 12,
-        score: 0
+        score: 5
     },
 ]
 
@@ -62,7 +62,6 @@ export default class Game extends React.Component {
         currentItems: [],
         countItem: 0,
         score: 0,
-        finalScore: 0,
         time: 59,
         collectItems: []
     }
@@ -84,10 +83,6 @@ export default class Game extends React.Component {
         this.countDown = setInterval(() => {
             this.setState({ time: this.state.time - 1 })
         }, 1000)
-
-        this.plusScore = setInterval(() => {
-          this.setState({ score: this.state.score + 1 })
-      }, 200)
     }
 
     moveLeft() {
@@ -128,11 +123,9 @@ export default class Game extends React.Component {
         this.state.currentItems.forEach(item => {
             if (item.pos == this.state.characterPosition && item.bottom < 0) {
                 this.setState({
-                    time : this.state.time - 100000,
-                    finalScore : this.state.score
-                    //score: this.state.score + item.score,
-                    //collectItems: [...this.state.collectItems, item.itemNo],
-                    //currentItems: this.state.currentItems.filter(ele => ele.no != item.no)
+                    score: this.state.score + item.score,
+                    collectItems: [...this.state.collectItems, item.itemNo],
+                    currentItems: this.state.currentItems.filter(ele => ele.no != item.no)
                 })
             }
         })
@@ -215,7 +208,7 @@ export default class Game extends React.Component {
                     alignItems: 'center'
                 }}
             >
-                <Text style={{ fontSize: 24 }}>Total Score: <Text style={{ fontSize: 48 }}>{this.state.finalScore}</Text></Text>
+                <Text style={{ fontSize: 24 }}>Total Score: <Text style={{ fontSize: 48 }}>{this.state.score}</Text></Text>
 
                 <View height={20} />
 
@@ -280,7 +273,7 @@ export default class Game extends React.Component {
                         height: 45,
                         left: this.state.grid[this.state.characterPosition] - 22.5
                     }}
-                    source={require('./assets/img/car.png')}
+                    source={require('../../assets/img/car.png')}
                 />
 
                 <View
