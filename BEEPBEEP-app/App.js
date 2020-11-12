@@ -5,44 +5,32 @@ import { AntDesign } from '@expo/vector-icons';
 const initialItems = [
     {
         itemNo: 1,
-        src: require('./assets/img/other-car.png'),
+        src: require('./assets/img/rsz_other-car.png'),
         speed: 6,
         score: 0
     },
     {
         itemNo: 2,
-        src: require('./assets/img/other-car.png'),
+        src: require('./assets/img/rsz_other-car.png'),
         speed: 6,
         score: 0
     },
     {
         itemNo: 3,
-        src: require('./assets/img/other-car.png'),
+        src: require('./assets/img/rsz_other-car.png'),
         speed: 8,
         score: 0
     },
     {
         itemNo: 4,
-        src: require('./assets/img/other-car.png'),
+        src: require('./assets/img/rsz_other-car.png'),
         speed: 4,
         score: 0
     },
     {
         itemNo: 5,
-        src: require('./assets/img/other-car.png'),
+        src: require('./assets/img/rsz_other-car.png'),
         speed: 8,
-        score: 0
-    },
-    {
-        itemNo: 6,
-        src: require('./assets/img/other-car.png'),
-        speed: 10,
-        score: 0
-    },
-    {
-        itemNo: 7,
-        src: require('./assets/img/other-car.png'),
-        speed: 12,
         score: 0
     },
 ]
@@ -50,15 +38,15 @@ const initialItems = [
 export default class Game extends React.Component {
     state = {
         grid: [
+            //Dimensions.get('window').width / 2 - 150,
             Dimensions.get('window').width / 2 - 150,
-            Dimensions.get('window').width / 2 - 100,
-            Dimensions.get('window').width / 2 - 50,
+            Dimensions.get('window').width / 2 - 75,
             Dimensions.get('window').width / 2,
-            Dimensions.get('window').width / 2 + 50,
-            Dimensions.get('window').width / 2 + 100,
-            Dimensions.get('window').width / 2 + 150
+            Dimensions.get('window').width / 2 + 75,
+            Dimensions.get('window').width / 2 + 150,
+            //Dimensions.get('window').width / 2 + 150
         ],
-        characterPosition: 3,
+        characterPosition: 2,
         currentItems: [],
         countItem: 0,
         score: 0,
@@ -95,7 +83,7 @@ export default class Game extends React.Component {
     }
 
     moveRight() {
-        if (this.state.characterPosition != 6) this.setState({ characterPosition: this.state.characterPosition + 1 })
+        if (this.state.characterPosition != 4) this.setState({ characterPosition: this.state.characterPosition + 1 })
     }
 
     randomInt(min, max) {
@@ -105,7 +93,7 @@ export default class Game extends React.Component {
     generateItem(array) {
         let index = this.randomInt(0, array.length - 1)
         let newItem = array[index]
-        let position = this.randomInt(0, 6)
+        let position = this.randomInt(0, 4)
         newItem.pos = position
         newItem.bottom = 350
         newItem.no = this.state.countItem
@@ -239,7 +227,7 @@ export default class Game extends React.Component {
                     }}
                     onPress={() => {
                         this.setState({
-                            characterPosition: 4,
+                            characterPosition: 2,
                             countItem: 0,
                             currentItems: [],
                             score: 0,
@@ -280,7 +268,7 @@ export default class Game extends React.Component {
                         height: 45,
                         left: this.state.grid[this.state.characterPosition] - 22.5
                     }}
-                    source={require('./assets/img/car.png')}
+                    source={require('./assets/img/rsz_car.png')}
                 />
 
                 <View
