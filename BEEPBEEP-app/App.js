@@ -5,31 +5,31 @@ import { AntDesign } from '@expo/vector-icons';
 const initialItems = [
     {
         itemNo: 1,
-        src: require('./assets/img/rsz_other-car.png'),
+        src: require('./assets/img/rsz_other-car1.png'),
         speed: 6,
         score: 0
     },
     {
         itemNo: 2,
-        src: require('./assets/img/rsz_other-car.png'),
+        src: require('./assets/img/rsz_other-car2.png'),
         speed: 6,
         score: 0
     },
     {
         itemNo: 3,
-        src: require('./assets/img/rsz_other-car.png'),
+        src: require('./assets/img/rsz_other-car3.png'),
         speed: 8,
         score: 0
     },
     {
         itemNo: 4,
-        src: require('./assets/img/rsz_other-car.png'),
+        src: require('./assets/img/rsz_other-car4.png'),
         speed: 4,
         score: 0
     },
     {
         itemNo: 5,
-        src: require('./assets/img/rsz_other-car.png'),
+        src: require('./assets/img/star.png'),
         speed: 8,
         score: 0
     },
@@ -114,13 +114,18 @@ export default class Game extends React.Component {
 
     itemDestroy() {
         this.state.currentItems.forEach(item => {
-            if (item.pos == this.state.characterPosition && item.bottom < 0) {
+            if (item.pos == this.state.characterPosition && item.bottom < 0 && item.itemNo != 5) {
                 this.setState({
                     time : this.state.time - 100000,  //โดนแล้วเวลาหมด = ตาย
                     finalScore : this.state.score, //เพิ่มตัวแปรใหม่ ไว้เก็บ score ตอนตาย ไม่งั้น score จะเพิ่มไปเรื่อยๆ
                     //score: this.state.score + item.score,
                     //collectItems: [...this.state.collectItems, item.itemNo],
-                    //currentItems: this.state.currentItems.filter(ele => ele.no != item.no)
+                    currentItems: this.state.currentItems.filter(ele => ele.no != item.no)
+                })
+            } else if (item.pos == this.state.characterPosition && item.bottom < 0 && item.itemNo == 5){
+                this.setState({
+                    score : this.state.score + 1000,
+                    currentItems: this.state.currentItems.filter(ele => ele.no != item.no),
                 })
             }
         })
