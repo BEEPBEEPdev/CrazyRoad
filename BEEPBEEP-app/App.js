@@ -116,8 +116,8 @@ export default class Game extends React.Component {
         this.state.currentItems.forEach(item => {
             if (item.pos == this.state.characterPosition && item.bottom < 0) {
                 this.setState({
-                    time : this.state.time - 100000,
-                    finalScore : this.state.score
+                    time : this.state.time - 100000,  //โดนแล้วเวลาหมด = ตาย
+                    finalScore : this.state.score, //เพิ่มตัวแปรใหม่ ไว้เก็บ score ตอนตาย ไม่งั้น score จะเพิ่มไปเรื่อยๆ
                     //score: this.state.score + item.score,
                     //collectItems: [...this.state.collectItems, item.itemNo],
                     //currentItems: this.state.currentItems.filter(ele => ele.no != item.no)
@@ -138,7 +138,7 @@ export default class Game extends React.Component {
                     key={index}
                     style={{
                         bottom: item.bottom,
-                        left: this.state.grid[item.pos] - 56,
+                        left: this.state.grid[item.pos] - 27,
                         alignSelf: 'center',
                         position: 'absolute',
                     }}
