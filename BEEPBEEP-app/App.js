@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Image, TouchableOpacity, Dimensions, Text } from 'react-native'
+import road from './assets/img/road.png'
 import { AntDesign } from '@expo/vector-icons';
 
 const initialItems = [
@@ -252,7 +253,10 @@ export default class Game extends React.Component {
         return (
             <View
                 style={{
-                    marginTop: 100,
+                    marginTop: "20%",
+                    backgroundImage:`url(${road})`,
+                    backgroundSize: "cover",
+                    width: "100%",
                 }}
             >
                 <Text style={{ alignSelf: 'center', fontSize: 32 }}>00:{this.state.time < 10 ? '0' + this.state.time : this.state.time}</Text>
