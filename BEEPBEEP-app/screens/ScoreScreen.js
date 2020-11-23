@@ -44,13 +44,13 @@ const ScoreScreen = (props) => {
       score: 0,
     },
   ];
-  const [playerPosition, setPlayerPosition] = useState(2);
+  const [playerPosition, setPlayerPosition] = useState(1);
   const [grid, setGrid] = useState([
-    Dimensions.get("window").width / 2 - 100,
+    // Dimensions.get("window").width / 2 - 100,
     Dimensions.get("window").width / 2 - 50,
     Dimensions.get("window").width / 2,
     Dimensions.get("window").width / 2 + 50,
-    Dimensions.get("window").width / 2 + 100,
+    // Dimensions.get("window").width / 2 + 100,
   ]);
 
   const [countItem, setCountItem] = useState(0);
@@ -66,7 +66,7 @@ const ScoreScreen = (props) => {
   };
 
   const moveRight = () => {
-    if (playerPosition != 4) {
+    if (playerPosition != 2) {
       setPlayerPosition(playerPosition + 1);
     }
   };
@@ -202,7 +202,13 @@ const ScoreScreen = (props) => {
             paddingLeft: 20,
           }}
         >
-          <AntDesign name="caretleft" size={45} color="yellow" />
+          <Image
+            style={{
+              width: 90,
+              height: 90,
+            }}
+            source={require("../assets/img/left.png")}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={moveRight}
@@ -215,7 +221,13 @@ const ScoreScreen = (props) => {
             paddingRight: 20,
           }}
         >
-          <AntDesign name="caretright" size={45} color="yellow" />
+          <Image
+            style={{
+              width: 90,
+              height: 90,
+            }}
+            source={require("../assets/img/right.png")}
+          />
         </TouchableOpacity>
       </View>
     </View>
