@@ -8,7 +8,7 @@ export default function App() {
   return (
     <ImageBackground source={image} style={styles.img}>
       <View>
-        <ScoreScreen />
+        <GameScreen />
       </View>
     </ImageBackground>
   );
@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
   img: {
     flex: 1,
     alignItems: "center",
-    resizeMode: "cover",
     justifyContent: "center",
   },
 });

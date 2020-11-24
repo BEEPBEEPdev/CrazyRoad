@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -70,27 +70,39 @@ const ScoreScreen = (props) => {
       setPlayerPosition(playerPosition + 1);
     }
   };
+  useEffect(() => {
+    const generateItems = setInterval(() => {
+      generateItem(initialItems);
+    }, 500);
+    const handleItems = setInterval(() => {
+      itemFall();
+      itemDestroy();
+    }, 25);
+    const scorePlus = setInterval(() => {
+      setScore(score + 1);
+    }, 500);
+  }, []);
 
-  const gameRunning = () => {
-    const generateItems = () => {
-      setInterval(() => {
-        generateItem(initialItems);
-      }, 500);
-    };
+  // const gameRunning = () => {
+  //   const generateItems = () => {
+  //     setInterval(() => {
+  //       generateItem(initialItems);
+  //     }, 500);
+  //   };
 
-    const handleItems = () => {
-      setInterval(() => {
-        itemFall();
-        itemDestroy();
-      }, 25);
-    };
+  //   const handleItems = () => {
+  //     setInterval(() => {
+  //       itemFall();
+  //       itemDestroy();
+  //     }, 25);
+  //   };
 
-    const scorePlus = () => {
-      setInterval(() => {
-        setScore(score + 1);
-      }, 500);
-    };
-  };
+  //   const scorePlus = () => {
+  //     setInterval(() => {
+  //       setScore(score + 1);
+  //     }, 500);
+  //   };
+  // };
 
   const randomInt = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -102,7 +114,7 @@ const ScoreScreen = (props) => {
     let position = randomInt(0, 6);
     newItem.pos = position;
     newItem.bottom = 350;
-    newItem.no = countItem();
+    newItem.no = countItem;
 
     setCurrentItems([...currentItems, newItem]);
     setCountItem(countItem + 1);
@@ -137,6 +149,7 @@ const ScoreScreen = (props) => {
             left: grid[item.pos] - 56,
             alignSelf: "center",
             position: "absolute",
+            alignItems: "center",
           }}
         >
           <Image
@@ -168,6 +181,7 @@ const ScoreScreen = (props) => {
       >
         {score}
       </Text>
+      <View>{renderItems}</View>
       <View
         style={{
           width: 350,
