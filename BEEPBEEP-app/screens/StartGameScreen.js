@@ -8,9 +8,16 @@ import {
   TouchableOpacity,
 } from "react-native";
 import GamePlay from "../screens/GamePlay";
-import image from "../assets/img/roadMove.gif";
+import image from "../assets/img/road.gif";
+import ostsfx from "../assets/sound/ost.wav";
+
+const ost = new Audio(ostsfx);
+const playSound = (audioFile) => {
+  audioFile.play();
+};
 
 export default function StartGameScreen({ navigation }) {
+  playSound(ost);
   return (
     <ImageBackground source={image} style={styles.img}>
       <View

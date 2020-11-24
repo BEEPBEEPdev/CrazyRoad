@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import image from "../assets/img/roadMove.gif";
 import hornsfx from "../assets/sound/horn.wav";
-import ostsfx from "../assets/sound/ost.wav";
+import ostsfx from "../assets/sound/GoGo.mp3";
 import turnsfx from "../assets/sound/turn.wav";
 import dingsfx from "../assets/sound/ding.wav";
 import explotionsfx from "../assets/sound/explotion.wav";
@@ -21,12 +21,12 @@ const explotion = new Audio(explotionsfx);
 const splat = new Audio(splatsfx);
 const horn = new Audio(hornsfx);
 const ost = new Audio(ostsfx);
-const playSound = audioFile => {
+const playSound = (audioFile) => {
   audioFile.play();
-}
-const pauseSound = audioFile => {
+};
+const pauseSound = (audioFile) => {
   audioFile.pause();
-}
+};
 
 const initialItems = [
   {
@@ -92,7 +92,7 @@ export default class GameScreen extends React.Component {
   componentDidMount() {
     this.gameRuning();
   }
-  playMusic(){
+  playMusic() {
     playSound(ost);
   }
 
@@ -109,6 +109,7 @@ export default class GameScreen extends React.Component {
     this.plusScore = setInterval(() => {
       this.setState({ score: this.state.score + 1 });
     }, 200);
+    playSound(ost);
   }
 
   moveLeft() {
@@ -374,7 +375,6 @@ export default class GameScreen extends React.Component {
             />
           </TouchableOpacity>
 
-
           {/* HORN---------------------------------------------------------------------------- */}
 
           <TouchableOpacity
@@ -397,7 +397,6 @@ export default class GameScreen extends React.Component {
           </TouchableOpacity>
 
           {/* HORN---------------------------------------------------------------------------- */}
-
 
           <TouchableOpacity
             onPress={() => this.moveRight()}
