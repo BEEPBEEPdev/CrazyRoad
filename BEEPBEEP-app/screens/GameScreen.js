@@ -40,18 +40,26 @@ const initialItems = [
     speed: 8,
     score: 0,
   },
+  {
+    itemNo: 6,
+    src: require("../assets/img/Uncle.gif"),
+    speed: 8,
+    score: 0,
+  },
+  {
+    itemNo: 7,
+    src: require("../assets/img/Aunt.gif"),
+    speed: 8,
+    score: 0,
+  },
 ];
 
 export default class GameScreen extends React.Component {
   state = {
     grid: [
-      //Dimensions.get('window').width / 2 - 150,
-      // Dimensions.get("window").width / 2 - 150,
       Dimensions.get("window").width / 2 - 50,
       Dimensions.get("window").width / 2,
       Dimensions.get("window").width / 2 + 50,
-      // Dimensions.get("window").width / 2 + 150,
-      //Dimensions.get('window').width / 2 + 150
     ],
     characterPosition: 1,
     currentItems: [],
@@ -122,7 +130,9 @@ export default class GameScreen extends React.Component {
       if (
         item.pos == this.state.characterPosition &&
         item.bottom < 0 &&
-        item.itemNo != 5
+        item.itemNo != 5 &&
+        item.itemNo != 6 &&
+        item.itemNo != 7
       ) {
         this.setState({
           life: this.state.life - 1, //โดนแล้วเวลาหมด = ตาย
@@ -140,6 +150,28 @@ export default class GameScreen extends React.Component {
       ) {
         this.setState({
           score: this.state.score + 100,
+          currentItems: this.state.currentItems.filter(
+            (ele) => ele.no != item.no
+          ),
+        });
+      } else if (
+        item.pos == this.state.characterPosition &&
+        item.bottom < 0 &&
+        item.itemNo == 6
+      ) {
+        this.setState({
+          score: this.state.score - 100,
+          currentItems: this.state.currentItems.filter(
+            (ele) => ele.no != item.no
+          ),
+        });
+      } else if (
+        item.pos == this.state.characterPosition &&
+        item.bottom < 0 &&
+        item.itemNo == 7
+      ) {
+        this.setState({
+          score: this.state.score - 100,
           currentItems: this.state.currentItems.filter(
             (ele) => ele.no != item.no
           ),

@@ -9,8 +9,6 @@ import {
   Image,
   Animated,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
-
 const ScoreScreen = (props) => {
   const initialItems = [
     {
@@ -70,6 +68,36 @@ const ScoreScreen = (props) => {
       setPlayerPosition(playerPosition + 1);
     }
   };
+  const generateItem = (array) => {
+    let index = randomInt(0, array.length - 1);
+    let newItem = array[index];
+    let position = randomInt(0, 6);
+    newItem.pos = position;
+    newItem.bottom = 350;
+    newItem.no = countItem;
+
+    setCurrentItems([...currentItems, newItem]);
+    setCountItem(countItem + 1);
+  };
+
+  const itemFall = () => {
+    setCurrentItems(
+      currentItems.map((item) => {
+        return { ...item, bottom: item.bottom - item.speed };
+      })
+    );
+  };
+
+  const itemDestroy = () => {
+    currentItems.forEach((item) => {
+      if (item.pos == playerPosition && item.bottom < 0) {
+        setCollectItems([...collectItems], item.itemNo);
+        setCurrentItems(currentItems.filter((ele) => ele.no != item.no));
+      }
+    });
+    setCurrentItems(currentItems.filter((item) => item.bottom > -25));
+  };
+
   useEffect(() => {
     const generateItems = setInterval(() => {
       generateItem(initialItems);
@@ -106,36 +134,6 @@ const ScoreScreen = (props) => {
 
   const randomInt = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
-  };
-
-  const generateItem = (array) => {
-    let index = randomInt(0, array.length - 1);
-    let newItem = array[index];
-    let position = randomInt(0, 6);
-    newItem.pos = position;
-    newItem.bottom = 350;
-    newItem.no = countItem;
-
-    setCurrentItems([...currentItems, newItem]);
-    setCountItem(countItem + 1);
-  };
-
-  const itemFall = () => {
-    setCurrentItems(
-      currentItems.map((item) => {
-        return { ...item, bottom: item.bottom - item.speed };
-      })
-    );
-  };
-
-  const itemDestroy = () => {
-    currentItems.forEach((item) => {
-      if (item.pos == playerPosition && item.bottom < 0) {
-        setCollectItems([...collectItems], item.itemNo);
-        setCurrentItems(currentItems.filter((ele) => ele.no != item.no));
-      }
-    });
-    setCurrentItems(currentItems.filter((item) => item.bottom > -25));
   };
 
   const renderItems = () => {
