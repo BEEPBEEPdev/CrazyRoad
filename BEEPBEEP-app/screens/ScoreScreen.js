@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,8 @@ import {
   Image,
   Animated,
 } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
+
 const ScoreScreen = (props) => {
   const initialItems = [
     {
@@ -42,13 +44,13 @@ const ScoreScreen = (props) => {
       score: 0,
     },
   ];
-  const [playerPosition, setPlayerPosition] = useState(1);
+  const [playerPosition, setPlayerPosition] = useState(2);
   const [grid, setGrid] = useState([
-    // Dimensions.get("window").width / 2 - 100,
+    Dimensions.get("window").width / 2 - 100,
     Dimensions.get("window").width / 2 - 50,
     Dimensions.get("window").width / 2,
     Dimensions.get("window").width / 2 + 50,
-    // Dimensions.get("window").width / 2 + 100,
+    Dimensions.get("window").width / 2 + 100,
   ]);
 
   const [countItem, setCountItem] = useState(0);
@@ -64,17 +66,43 @@ const ScoreScreen = (props) => {
   };
 
   const moveRight = () => {
-    if (playerPosition != 2) {
+    if (playerPosition != 4) {
       setPlayerPosition(playerPosition + 1);
     }
   };
+
+  const gameRunning = () => {
+    const generateItems = () => {
+      setInterval(() => {
+        generateItem(initialItems);
+      }, 500);
+    };
+
+    const handleItems = () => {
+      setInterval(() => {
+        itemFall();
+        itemDestroy();
+      }, 25);
+    };
+
+    const scorePlus = () => {
+      setInterval(() => {
+        setScore(score + 1);
+      }, 500);
+    };
+  };
+
+  const randomInt = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  };
+
   const generateItem = (array) => {
     let index = randomInt(0, array.length - 1);
     let newItem = array[index];
     let position = randomInt(0, 6);
     newItem.pos = position;
     newItem.bottom = 350;
-    newItem.no = countItem;
+    newItem.no = countItem();
 
     setCurrentItems([...currentItems, newItem]);
     setCountItem(countItem + 1);
@@ -98,44 +126,6 @@ const ScoreScreen = (props) => {
     setCurrentItems(currentItems.filter((item) => item.bottom > -25));
   };
 
-  useEffect(() => {
-    const generateItems = setInterval(() => {
-      generateItem(initialItems);
-    }, 500);
-    const handleItems = setInterval(() => {
-      itemFall();
-      itemDestroy();
-    }, 25);
-    const scorePlus = setInterval(() => {
-      setScore(score + 1);
-    }, 500);
-  }, []);
-
-  // const gameRunning = () => {
-  //   const generateItems = () => {
-  //     setInterval(() => {
-  //       generateItem(initialItems);
-  //     }, 500);
-  //   };
-
-  //   const handleItems = () => {
-  //     setInterval(() => {
-  //       itemFall();
-  //       itemDestroy();
-  //     }, 25);
-  //   };
-
-  //   const scorePlus = () => {
-  //     setInterval(() => {
-  //       setScore(score + 1);
-  //     }, 500);
-  //   };
-  // };
-
-  const randomInt = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  };
-
   const renderItems = () => {
     let items = [];
     currentItems.forEach((item, index) => {
@@ -147,7 +137,6 @@ const ScoreScreen = (props) => {
             left: grid[item.pos] - 56,
             alignSelf: "center",
             position: "absolute",
-            alignItems: "center",
           }}
         >
           <Image
@@ -179,7 +168,6 @@ const ScoreScreen = (props) => {
       >
         {score}
       </Text>
-      <View>{renderItems}</View>
       <View
         style={{
           width: 350,
@@ -214,13 +202,7 @@ const ScoreScreen = (props) => {
             paddingLeft: 20,
           }}
         >
-          <Image
-            style={{
-              width: 90,
-              height: 90,
-            }}
-            source={require("../assets/img/left.png")}
-          />
+          <AntDesign name="caretleft" size={45} color="yellow" />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={moveRight}
@@ -233,13 +215,7 @@ const ScoreScreen = (props) => {
             paddingRight: 20,
           }}
         >
-          <Image
-            style={{
-              width: 90,
-              height: 90,
-            }}
-            source={require("../assets/img/right.png")}
-          />
+          <AntDesign name="caretright" size={45} color="yellow" />
         </TouchableOpacity>
       </View>
     </View>

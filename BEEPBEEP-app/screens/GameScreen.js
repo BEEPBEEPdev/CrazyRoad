@@ -1,54 +1,36 @@
 import React from "react";
-import {
-  View,
-  Image,
-  TouchableOpacity,
-  Dimensions,
-  Text,
-  ImageBackground,
-} from "react-native";
-import image from "../assets/img/roadMove.gif";
+import { View, Image, TouchableOpacity, Dimensions, Text } from "react-native";
+import road from "../assets/img/road.png";
+import { AntDesign } from "@expo/vector-icons";
 
 const initialItems = [
   {
     itemNo: 1,
-    src: require("../assets/img/CarOj.gif"),
-    speed: 8,
+    src: require("../assets/img/rsz_other-car1.png"),
+    speed: 6,
     score: 0,
   },
   {
     itemNo: 2,
-    src: require("../assets/img/CarOj2.gif"),
-    speed: 8,
+    src: require("../assets/img/rsz_other-car2.png"),
+    speed: 6,
     score: 0,
   },
   {
     itemNo: 3,
-    src: require("../assets/img/CarOj3.gif"),
+    src: require("../assets/img/rsz_other-car3.png"),
     speed: 8,
     score: 0,
   },
   {
     itemNo: 4,
-    src: require("../assets/img/CarOj.gif"),
-    speed: 8,
+    src: require("../assets/img/rsz_other-car4.png"),
+    speed: 4,
     score: 0,
   },
   {
     itemNo: 5,
-    src: require("../assets/img/StarPlus.gif"),
-    speed: 8,
-    score: 0,
-  },
-  {
-    itemNo: 6,
-    src: require("../assets/img/Uncle.gif"),
-    speed: 8,
-    score: 0,
-  },
-  {
-    itemNo: 7,
-    src: require("../assets/img/Aunt.gif"),
+    src: require("../assets/img/star.png"),
     speed: 8,
     score: 0,
   },
@@ -57,16 +39,20 @@ const initialItems = [
 export default class GameScreen extends React.Component {
   state = {
     grid: [
-      Dimensions.get("window").width / 2 - 50,
+      //Dimensions.get('window').width / 2 - 150,
+      Dimensions.get("window").width / 2 - 150,
+      Dimensions.get("window").width / 2 - 75,
       Dimensions.get("window").width / 2,
-      Dimensions.get("window").width / 2 + 50,
+      Dimensions.get("window").width / 2 + 75,
+      Dimensions.get("window").width / 2 + 150,
+      //Dimensions.get('window').width / 2 + 150
     ],
-    characterPosition: 1,
+    characterPosition: 2,
     currentItems: [],
     countItem: 0,
     score: 0,
     finalScore: 0,
-    life: 1,
+    time: 59,
     collectItems: [],
   };
 
@@ -84,6 +70,10 @@ export default class GameScreen extends React.Component {
       this.itemDestroy();
     }, 25);
 
+    this.countDown = setInterval(() => {
+      this.setState({ time: this.state.time - 1 });
+    }, 1000);
+
     this.plusScore = setInterval(() => {
       this.setState({ score: this.state.score + 1 });
     }, 200);
@@ -95,7 +85,7 @@ export default class GameScreen extends React.Component {
   }
 
   moveRight() {
-    if (this.state.characterPosition != 2)
+    if (this.state.characterPosition != 4)
       this.setState({ characterPosition: this.state.characterPosition + 1 });
   }
 
@@ -106,7 +96,7 @@ export default class GameScreen extends React.Component {
   generateItem(array) {
     let index = this.randomInt(0, array.length - 1);
     let newItem = array[index];
-    let position = this.randomInt(0, 2);
+    let position = this.randomInt(0, 4);
     newItem.pos = position;
     newItem.bottom = 350;
     newItem.no = this.state.countItem;
@@ -130,12 +120,10 @@ export default class GameScreen extends React.Component {
       if (
         item.pos == this.state.characterPosition &&
         item.bottom < 0 &&
-        item.itemNo != 5 &&
-        item.itemNo != 6 &&
-        item.itemNo != 7
+        item.itemNo != 5
       ) {
         this.setState({
-          life: this.state.life - 1, //โดนแล้วเวลาหมด = ตาย
+          time: this.state.time - 100000, //โดนแล้วเวลาหมด = ตาย
           finalScore: this.state.score, //เพิ่มตัวแปรใหม่ ไว้เก็บ score ตอนตาย ไม่งั้น score จะเพิ่มไปเรื่อยๆ
           //score: this.state.score + item.score,
           //collectItems: [...this.state.collectItems, item.itemNo],
@@ -149,29 +137,7 @@ export default class GameScreen extends React.Component {
         item.itemNo == 5
       ) {
         this.setState({
-          score: this.state.score + 100,
-          currentItems: this.state.currentItems.filter(
-            (ele) => ele.no != item.no
-          ),
-        });
-      } else if (
-        item.pos == this.state.characterPosition &&
-        item.bottom < 0 &&
-        item.itemNo == 6
-      ) {
-        this.setState({
-          score: this.state.score - 100,
-          currentItems: this.state.currentItems.filter(
-            (ele) => ele.no != item.no
-          ),
-        });
-      } else if (
-        item.pos == this.state.characterPosition &&
-        item.bottom < 0 &&
-        item.itemNo == 7
-      ) {
-        this.setState({
-          score: this.state.score - 100,
+          score: this.state.score + 1000,
           currentItems: this.state.currentItems.filter(
             (ele) => ele.no != item.no
           ),
@@ -200,8 +166,8 @@ export default class GameScreen extends React.Component {
         >
           <Image
             style={{
-              width: 75,
-              height: 125,
+              width: 45,
+              height: 75,
             }}
             source={item.src}
           />
@@ -211,9 +177,49 @@ export default class GameScreen extends React.Component {
     return items;
   }
 
+  renderEachScore() {
+    let result = {};
+    this.state.collectItems.forEach((i) => {
+      result[i] = (result[i] || 0) + 1;
+    });
+    let array = [];
+
+    Object.keys(result).forEach((element) => {
+      initialItems.forEach((item) => {
+        if (element == item.itemNo) {
+          array.push(
+            <View
+              key={item.itemNo}
+              style={{
+                flexDirection: "row",
+                alignItems: "flex-end",
+              }}
+            >
+              <Image
+                source={item.src}
+                style={{
+                  width: 40,
+                  height: 40,
+                  marginTop: 20,
+                  marginRight: 10,
+                }}
+              />
+              <Text style={{ fontSize: 24 }}>
+                <Text style={{ fontSize: 16 }}>X</Text> {result[element]} ={" "}
+                {result[element] * item.score}
+              </Text>
+            </View>
+          );
+        }
+      });
+    });
+    return array;
+  }
+
   renderResultScreen() {
     clearInterval(this.generateItems);
     clearInterval(this.handleItems);
+    clearInterval(this.countDown);
 
     return (
       <View
@@ -223,21 +229,16 @@ export default class GameScreen extends React.Component {
           alignItems: "center",
         }}
       >
-        <Image
-          style={{
-            width: "100%",
-            height: "100%",
-          }}
-          source={require("../assets/img/gameOver.png")}
-        />
-        <Text style={{ fontSize: 24, color: "white" }}>
+        <Text style={{ fontSize: 24 }}>
           Total Score:{" "}
-          <Text style={{ fontSize: 48, color: "white" }}>
-            {this.state.finalScore}
-          </Text>
+          <Text style={{ fontSize: 48 }}>{this.state.finalScore}</Text>
         </Text>
 
         <View height={20} />
+
+        <View style={{ alignItems: "flex-start" }}>
+          {this.renderEachScore()}
+        </View>
 
         <View height={40} />
 
@@ -252,11 +253,11 @@ export default class GameScreen extends React.Component {
           }}
           onPress={() => {
             this.setState({
-              characterPosition: 1,
+              characterPosition: 2,
               countItem: 0,
               currentItems: [],
               score: 0,
-              life: 1,
+              time: 59,
               collectItems: [],
             });
             this.gameRuning();
@@ -270,32 +271,16 @@ export default class GameScreen extends React.Component {
 
   renderGamePlayScreen() {
     return (
-      // <ImageBackground
-      //   source={image}
-      //   style={{
-      //     img: {
-      //       flex: 1,
-      //       alignItems: "center",
-      //       resizeMode: "cover",
-      //       justifyContent: "center",
-      //     },
-      //   }}
-      // >
       <View
         style={{
-          marginTop: 100,
+          marginTop: "20%",
+          //   backgroundImage: `url(${road})`,
+          //   backgroundSize: "cover",
+          width: "100%",
         }}
       >
-        <Text
-          style={{
-            marginTop: -10,
-            fontSize: 50,
-            alignSelf: "center",
-            color: "white",
-            backgroundColor: "black",
-          }}
-        >
-          {this.state.score}
+        <Text style={{ alignSelf: "center", fontSize: 32 }}>
+          00:{this.state.time < 10 ? "0" + this.state.time : this.state.time}
         </Text>
         <View
           style={{
@@ -309,9 +294,9 @@ export default class GameScreen extends React.Component {
         </View>
         <Image
           style={{
-            width: 75,
-            height: 125,
-            left: this.state.grid[this.state.characterPosition] - 37.5,
+            width: 45,
+            height: 75,
+            left: this.state.grid[this.state.characterPosition] - 22.5,
           }}
           source={require("../assets/img/P1Car.gif")}
         />
@@ -334,13 +319,7 @@ export default class GameScreen extends React.Component {
               paddingLeft: 20,
             }}
           >
-            <Image
-              style={{
-                width: 90,
-                height: 90,
-              }}
-              source={require("../assets/img/left.png")}
-            />
+            <AntDesign name="caretleft" size={45} />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => this.moveRight()}
@@ -353,24 +332,20 @@ export default class GameScreen extends React.Component {
               paddingRight: 20,
             }}
           >
-            <Image
-              style={{
-                width: 90,
-                height: 90,
-              }}
-              source={require("../assets/img/right.png")}
-            />
+            <AntDesign name="caretright" size={45} />
           </TouchableOpacity>
         </View>
 
+        <Text style={{ marginTop: -10, fontSize: 28, alignSelf: "center" }}>
+          {this.state.score}
+        </Text>
         {/* <Text>{JSON.stringify(this.state.currentItems)}</Text> */}
       </View>
-      // </ImageBackground>
     );
   }
 
   render() {
-    if (this.state.life <= 0) {
+    if (this.state.time <= 0) {
       return this.renderResultScreen();
     } else {
       return this.renderGamePlayScreen();
