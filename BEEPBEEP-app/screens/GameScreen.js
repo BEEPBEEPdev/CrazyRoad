@@ -10,8 +10,15 @@ import {
 import image from "../assets/img/roadMove.gif";
 import hornsfx from "../assets/sound/horn.wav";
 import ostsfx from "../assets/sound/ost.wav";
+import turnsfx from "../assets/sound/turn.wav";
+import dingsfx from "../assets/sound/ding.wav";
+import explotionsfx from "../assets/sound/explotion.wav";
+import splatsfx from "../assets/sound/splat.wav";
 
-
+const turn = new Audio(turnsfx);
+const ding = new Audio(dingsfx);
+const explotion = new Audio(explotionsfx);
+const splat = new Audio(splatsfx);
 const horn = new Audio(hornsfx);
 const ost = new Audio(ostsfx);
 const playSound = audioFile => {
@@ -105,11 +112,13 @@ export default class GameScreen extends React.Component {
   }
 
   moveLeft() {
+    playSound(turn);
     if (this.state.characterPosition != 0)
       this.setState({ characterPosition: this.state.characterPosition - 1 });
   }
 
   moveRight() {
+    playSound(turn);
     if (this.state.characterPosition != 2)
       this.setState({ characterPosition: this.state.characterPosition + 1 });
   }
@@ -149,6 +158,7 @@ export default class GameScreen extends React.Component {
         item.itemNo != 6 &&
         item.itemNo != 7
       ) {
+        playSound(explotion);
         pauseSound(ost);
         this.setState({
           life: this.state.life - 1, //โดนแล้วเวลาหมด = ตาย
@@ -164,6 +174,7 @@ export default class GameScreen extends React.Component {
         item.bottom < 0 &&
         item.itemNo == 5
       ) {
+        playSound(ding);
         this.setState({
           score: this.state.score + 100,
           currentItems: this.state.currentItems.filter(
@@ -175,6 +186,7 @@ export default class GameScreen extends React.Component {
         item.bottom < 0 &&
         item.itemNo == 6
       ) {
+        playSound(splat);
         this.setState({
           score: this.state.score - 100,
           currentItems: this.state.currentItems.filter(
@@ -186,6 +198,7 @@ export default class GameScreen extends React.Component {
         item.bottom < 0 &&
         item.itemNo == 7
       ) {
+        playSound(splat);
         this.setState({
           score: this.state.score - 100,
           currentItems: this.state.currentItems.filter(
@@ -267,6 +280,7 @@ export default class GameScreen extends React.Component {
             alignItems: "center",
           }}
           onPress={() => {
+            playSound(turn);
             this.setState({
               characterPosition: 1,
               countItem: 0,
